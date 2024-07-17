@@ -1,11 +1,19 @@
+// * Doves and Hawks Simulation.
+// * Author: Aditya  
+
+//adding libraries
 #include <bits/stdc++.h>
 #include <stdio.h>
 using namespace std;
 
+// ? number of generations. C1
 int iterations = 100;
+
+// contains generation data. C1
 int numbers[100][3] = {0};
 int itr = 0;
-// assign trees
+
+// ? assign trees to each creature C2
 int* assign_trees(int creatures[1001][6]) {
     int count = creatures[0][0];
     int tree_available = creatures[0][3];
@@ -38,7 +46,7 @@ int* assign_trees(int creatures[1001][6]) {
     return creatures[6];
 }
 
-// hardcoded
+// ? decides how much food one gets, also contains the food matrix. C2
 int* calculate_food(int creatures[1001][6]) {
     int count = creatures[0][0];
     int tree_available = creatures[0][3];
@@ -54,6 +62,7 @@ int* calculate_food(int creatures[1001][6]) {
         }
     }
 
+    //food matrix
     int a = 0, b = 0, c = 0, d = 0;
     for (int i = 1; i < max; i++) {
         for (int j = 1; j < max; j++) {
@@ -88,10 +97,10 @@ int* calculate_food(int creatures[1001][6]) {
             }
         }
     }
-    // cout << a << " " << b << " " << c << " " << d << endl;
     return creatures[6];
 }
 
+// ? finds the creature num for upcoming creature. C2
 int creature_num(int creatures[1001][6]) {
     int num = 0;
     int max = creatures[0][4];
@@ -102,7 +111,8 @@ int creature_num(int creatures[1001][6]) {
     }
     return num;
 }
-// hardcoded
+
+// ? gives and takes life of a creature. C2
 int* deathORlife(int creatures[1001][6]) {
     int max = creatures[0][4];
     for (int i = 1; i < max; i++) {
@@ -139,32 +149,8 @@ int* deathORlife(int creatures[1001][6]) {
     }
     return creatures[6];
 }
-// hardcoded
 
-int* kill(int creatures[1001][6]) {
-    int max_creatures = creatures[0][4];
-    for (int i = 0; i < max_creatures; i++) {
-        if (creatures[i][0] == 0) {
-            creatures[i][1] = 0;
-            creatures[i][2] = 0;
-            creatures[i][3] = 0;
-            creatures[i][4] = 0;
-            creatures[i][5] = 0;
-        }
-    }
-    return creatures[6];
-}
-
-void print(int creatures[1001][6]) {
-    int max_creatures = creatures[0][4];
-    cout << "==========" << endl;
-    for (int i = 0; i < max_creatures; i++) {
-        if (creatures[i][0] != 0) {
-            cout << creatures[i][0] << " " << creatures[i][1] << " " << creatures[i][2] << " " << creatures[i][3] << " " << creatures[i][4] << " " << creatures[i][5] << endl;
-        }
-    }
-}
-
+// ? calculates stats in a iterations. C2
 int* stat(int creatures[1001][6]) {
     int count = creatures[0][0];
     int doves = creatures[0][1];
@@ -186,25 +172,12 @@ int* stat(int creatures[1001][6]) {
     numbers[itr][0] = creatures[0][0];
     numbers[itr][1] = u_doves;
     numbers[itr][2] = u_hawks;
-    // cout << "_____________" << endl;
-    // ! restart this
     cout << "doves: " << u_doves << endl;
     cout << "hawks: " << u_hawks << endl;
-    // cout << "_____________" << endl;
-    int min = 10000000;
-    int gen = 0;
-    for (int i = 1; i < max; i++) {
-        if (creatures[i][0] != 0 && creatures[i][0] < min) {
-            min = creatures[i][0];
-            gen = creatures[i][1];
-        }
-    }
-    // ! restart this
-    cout << "oldest creature: " << min << " " << "generation: " << gen << endl;
-
     return creatures[6];
 }
 
+// ? gives generation data. C2
 void gen(int creatures[1001][6]) {
     int max = creatures[0][4];
     int stat = creatures[0][5];
@@ -214,23 +187,24 @@ void gen(int creatures[1001][6]) {
             generation[creatures[i][1]]++;
         }
     }
-    cout << "------------------------------" << endl;
-    cout << "Number of creatures in each generation: " << endl;
+    cout << "---------------" << endl;
+    cout << "Number of creatures of a generation in each iteration: " << endl;
     for (int i = 0; i < stat; i++) {
         cout << generation[i] << " ";
     }
     cout << endl;
+    
 }
+// ? collection of functions in loop. C2
 int* next(int creatures[1001][6]) {
     assign_trees(creatures);
     calculate_food(creatures);
-    // print(creatures);
     deathORlife(creatures);
-    // cout << "<------------->" << endl;
     stat(creatures);
     return creatures[6];
 }
 
+//calculates average of number of both types after each generation.
 void average() {
     int sumh = 0, sumd = 0, sumt = 0;
     for (int i = 0; i < iterations; i++) {
@@ -244,19 +218,19 @@ void average() {
 }
 
 int main() {
+    //reset random values.
     srand(time(0));
 
+    //initialize values.
     int doves = 500;
     int hawks = 500;
     int total_creatures = doves + hawks;
     int generation = 0;
     int tree_available = 500;
-    //-------------------------------------
     int max_creatures = 2 * tree_available + 1;
-    //-------------------------------------
     int creatures[max_creatures][6];
 
-    // position 0 manual storage
+    // position 0 stores crutial information.
     creatures[0][0] = total_creatures;
     creatures[0][1] = doves;
     creatures[0][2] = hawks;
@@ -264,7 +238,7 @@ int main() {
     creatures[0][4] = max_creatures;
     creatures[0][5] = iterations;
 
-    // assigning the doves and hawks to start
+    // creating the doves and hawks to start
     for (int i = 1; i < doves + 1; i++) {
         creatures[i][0] = i;
         creatures[i][1] = 1;
@@ -281,12 +255,20 @@ int main() {
         creatures[i][4] = 0;
         creatures[i][5] = 0;
     }
-    // declaring rest all dead
+
+    // declaring rest all dead to avoid garbage values.
     for (int i = 1 + doves + hawks; i < max_creatures; i++) {
         creatures[i][0] = 0;
     }
-    // killing the declared deads
-    kill(creatures);
+    for (int i = 0; i < max_creatures; i++) {
+        if (creatures[i][0] == 0) {
+            creatures[i][1] = 0;
+            creatures[i][2] = 0;
+            creatures[i][3] = 0;
+            creatures[i][4] = 0;
+            creatures[i][5] = 0;
+        }
+    }
 
     // show initial number of creatures
     cout << "iteration no. " << itr << endl;
@@ -294,16 +276,10 @@ int main() {
 
     for (int i = 0; i < iterations; i++) {
         itr++;
-        cout << "------------------------------" << endl;
+        cout << "---------------" << endl;
         cout << "iteration no. " << itr << endl;
         next(creatures);
     }
-
-    // testing
-    // cout << "<------------------>" << endl;
-    // print(creatures);
-
     gen(creatures);
-    // cout << endl;
     average();
 }
