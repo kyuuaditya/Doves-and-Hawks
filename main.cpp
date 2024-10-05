@@ -1,7 +1,7 @@
 // * Doves and Hawks Simulation.
-// * Author: Aditya  
+// * Author: Aditya
 
-//adding libraries
+// adding libraries
 #include <bits/stdc++.h>
 #include <stdio.h>
 using namespace std;
@@ -28,7 +28,8 @@ int* assign_trees(int creatures[1001][6]) {
     int creature_checker[max] = {0};
     while (runs) {
         int random = rand() % max;
-        if (creatures[random][0] != 0 && random != 0 && creature_checker[random] < 1) {
+        if (creatures[random][0] != 0 && random != 0 &&
+            creature_checker[random] < 1) {
             int random2 = rand() % tree_available;
             if (tree_checker[random2] < 2) {
                 creatures[random][5] = random2 + 1;
@@ -62,11 +63,12 @@ int* calculate_food(int creatures[1001][6]) {
         }
     }
 
-    //food matrix
+    // food matrix
     int a = 0, b = 0, c = 0, d = 0;
     for (int i = 1; i < max; i++) {
         for (int j = 1; j < max; j++) {
-            if (creatures[i][5] == creatures[j][5] && i != j && creatures[i][0] != 0) {
+            if (creatures[i][5] == creatures[j][5] && i != j &&
+                creatures[i][0] != 0) {
                 if (creatures[i][2] == 0 && creatures[j][2] == 0) {
                     creatures[i][3] = 1;
                     creatures[i][4] = 0;
@@ -193,7 +195,6 @@ void gen(int creatures[1001][6]) {
         cout << generation[i] << " ";
     }
     cout << endl;
-    
 }
 // ? collection of functions in loop. C2
 int* next(int creatures[1001][6]) {
@@ -204,7 +205,7 @@ int* next(int creatures[1001][6]) {
     return creatures[6];
 }
 
-//calculates average of number of both types after each generation.
+// calculates average of number of both types after each generation.
 void average() {
     int sumh = 0, sumd = 0, sumt = 0;
     for (int i = 0; i < iterations; i++) {
@@ -218,10 +219,10 @@ void average() {
 }
 
 int main() {
-    //reset random values.
+    // reset random values.
     srand(time(0));
 
-    //initialize values.
+    // initialize values.
     int doves = 500;
     int hawks = 500;
     int total_creatures = doves + hawks;
